@@ -1,0 +1,42 @@
+version: '2'
+services:
+  db:
+    image: postgres
+#    volumes_from:
+#      - psqldata
+    ports:
+      - "5438:5432"
+#  psqldata:
+#    image: postgres
+#    volumes:
+#      - ./data/:/var/lib/postgresql/data
+  app:
+    command: bundle exec puma -C config/puma.rb
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  nginx:
+    image: nginx
+    volumes_from:
+      - app
+    depends_on:
+      - app
+  db_backup:
+    image: equinoxone/postgres_backup:0.1
+    depends_on:
+      - db
+    volumes:
+      - ./backup:/backup
+    environment:
+  #    - PGUSER=postgres
+  #    - PGPASSWORD=
+  #    - PGPORT=5432
+  #    - PGHOST=db
+      - PGDATABASE=app_database
+
+#volumes:
+#  postgres-db-volume:
+#    driver: local
+
+
