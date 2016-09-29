@@ -41,9 +41,11 @@ Check & modify nginx.devel.conf place in root directory
 
 >Terminal
 `docker-compose run --rm app rails db:create`
-docker-compose exec --user "$(id -u):$(id -g)" app rails db:reset
+`docker-compose exec --user "$(id -u):$(id -g)" app rails db:reset`
+
 
 ERROR?
+>Terminal
 `docker-compose run --rm app rails db:setup`
 
 
